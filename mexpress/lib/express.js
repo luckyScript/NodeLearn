@@ -1,6 +1,6 @@
 const http = require('http');
 const methods = require('methods');
-const Route = require('./router/Route');
+const Route = require('./router/index');
 
 module.exports = function createServer() {
     const app = function (req, res) {

@@ -1,7 +1,10 @@
+const pathRegexp = require('path-to-regexp');
 class Layer {
-    constructor(method, fn) {
+    constructor(path, method, fn) {
+        this.path = path;
         this.method = method;
         this.handle = fn;
+        this.regexp = pathRegexp(path, this.keys = [])
     }
     handle_method(req) {
         return this.method.toLowerCase() === req.method.toLowerCase()
@@ -13,6 +16,17 @@ class Layer {
             fn(req, res, next);
         } catch (err) {
             throw err;
+        }
+    }
+    match(path) {
+        if (path) {
+            if (path === '/' || path === '*') {
+                return true
+            } else {
+                return Boolean(this.regexp.exec(path));
+            }
+        } else {
+            return false;
         }
     }
 }
